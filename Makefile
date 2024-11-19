@@ -5,46 +5,40 @@
 #                                                     +:+ +:+         +:+      #
 #    By: luinasci <luinasci@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/11/12 17:31:47 by luinasci          #+#    #+#              #
-#    Updated: 2024/11/13 18:13:54 by luinasci         ###   ########.fr        #
+#    Created: 2024/11/19 17:33:35 by luinasci          #+#    #+#              #
+#    Updated: 2024/11/19 17:41:39 by luinasci         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRC =	ft_printf.c
-		ft_printf_utils.c
-		ft_transform.c
+NAME		=	libftprintf.a
+LIB			=	ar rcs
+RM			=	rm -f
+CC			=	cc
+CFLAGS		=	-Wall -Wextra -Werror
 
-HEADER =	ft_printf.h
+SRCS		=	ft_printf.c \
+				ft_printf_utils.c \
+				ft_handlers.c \
+				ft_handlers2.c
 
-OBJS = $(SRCS:.c=.o)
+OBJS		=	$(SRCS:.c=.o)
 
-BONUS =
+INCLUDES	=	ft_printf.h
 
-BONUS_OBJS = $(BONUS:.c=.o)
+all:		$(NAME)
 
-CC = gcc
-RM = rm -f
-CFLAGS = -Wall -Wextra -Werror
+$(NAME):	$(OBJS)
+			$(LIB) $(NAME) $(OBJS)
 
-NAME = libftprintf.a
-
-all: $(NAME)
-
-$(NAME): $(OBJS)
-	$(AR) -r $@ $^
-
-bonus: $(OBJS) $(BONUS_OBJS)
-	$(AR) -r $(NAME) $^
-
-%.o: %.c
-	$(CC) -c $(CFLAGS) $<
+%.o: %.c $(INCLUDES)
+			$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	$(RM) $(OBJS) $(BONUS_OBJS)
+			$(RM) $(OBJS)
 
-fclean: clean
-	$(RM) $(NAME)
+fclean:		clean
+			$(RM) $(NAME)
 
-re: fclean all
+re:			fclean all
 
-.PHONY: all bonus clean fclean re
+.PHONY:		all clean fclean re

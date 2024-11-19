@@ -5,50 +5,103 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: luinasci <luinasci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/13 16:17:34 by luinasci          #+#    #+#             */
-/*   Updated: 2024/11/13 18:11:26 by luinasci         ###   ########.fr       */
+/*   Created: 2024/11/19 17:29:33 by luinasci          #+#    #+#             */
+/*   Updated: 2024/11/19 17:29:35 by luinasci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	ft_putchar_fd(char c, int fd)
+int	ft_print_str(char *str)
 {
-	write(fd, &c, 1);
+	int	count;
+
+	if (!str)
+		return (ft_print_str("(null)"));
+	count = 0;
+	while (*str)
+	{
+		count += ft_putchar(*str);
+		str++;
+	}
+	return (count);
 }
 
-void	ft_putstr_fd(char *s, int fd)
+int	ft_print_nbr(long nbr)
 {
-	if (fd < 0)
-		return ;
-	while (*s)
+	int		count;
+	char	c;
+
+	count = 0;
+	if (nbr < 0)
 	{
-		ft_putchar_fd(*s, fd);
-		s++;
+		count += ft_putchar('-');
+		nbr = -nbr;
 	}
+	if (nbr >= 10)
+	{
+		count += ft_print_nbr(nbr / 10);
+		count += ft_print_nbr(nbr % 10);
+	}
+	else
+	{
+		c = nbr + '0';
+		count += ft_putchar(c);
+	}
+	return (count);
 }
 
-char	*ft_char(char *s, unsigned int number, long int len)
+int	ft_print_unbr(unsigned int nbr)
 {
-	while (number > 0)
+	int		count;
+	char	c;
+
+	count = 0;
+	if (nbr >= 10)
 	{
-		s[len--] = 48 + (number % 10);
-		number = number / 10;
+		count += ft_print_nbr(nbr / 10);
+		count += ft_print_nbr(nbr % 10);
 	}
-	return (s);
+	else
+	{
+		c = nbr + '0';
+		count += ft_putchar(c);
+	}
+	return (count);
 }
 
-long int	ft_len(int n)
+int	ft_print_ptr(va_list args)
 {
-	int	len;
+	int				count;
+	unsigned long	ptr;
 
-	len = 0;
-	if (n <= 0)
-		len = 1;
-	while (n != 0)
+	count = 0;
+	ptr = va_arg(args, unsigned long);
+	if (ptr == 0)
+		count += ft_print_str("(nil)");
+	else
 	{
-		len++;
-		n = n / 10;
+		count += ft_print_str("0x");
+		count += ft_print_hex(ptr, "0123456789abcdef");
 	}
-	return (len);
+	return (count);
+}
+
+int	ft_print_hex(unsigned long n, const char *base)
+{
+	int			count;
+	char		c;
+
+	count = 0;
+	if (n >= 16)
+	{
+		count += ft_print_hex(n / 16, base);
+		count += ft_print_hex(n % 16, base);
+	}
+	else
+	{
+		c = base[n];
+		count += ft_putchar(c);
+	}
+	return (count);
 }

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: luinasci <luinasci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/12 17:31:41 by luinasci          #+#    #+#             */
-/*   Updated: 2024/11/13 18:11:16 by luinasci         ###   ########.fr       */
+/*   Created: 2024/11/19 17:29:47 by luinasci          #+#    #+#             */
+/*   Updated: 2024/11/19 17:31:07 by luinasci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,23 @@
 
 # include <stddef.h>
 # include <stdarg.h>
-# include <stdio.h>
 # include <stdlib.h>
+# include <unistd.h>
 
 int			ft_printf(const char *format, ...);
-char		*ft_utoa(unsigned int n);
-char		*ft_itoa(int n);
-long int	ft_len(int n);
-char		*ft_char(char *s, unsigned int number, long int len);
-void		ft_putchar_fd(char c, int fd);
-void		ft_putstr_fd(char *s, int fd);
+int			ft_handle_everything(va_list args, char identifier);
+int			ft_putchar(char c);
+int			ft_print_str(char *str);
+int			ft_print_nbr(long nbr);
+int			ft_print_unbr(unsigned int nbr);
+int			ft_print_ptr(va_list args);
+int			ft_print_hex(unsigned long n, const char *base);
+int			handle_s(va_list args);
+int			handle_d(va_list args);
+int			handle_u(va_list args);
+int			handle_p(va_list args);
+int			handle_x(va_list args);
+int			handle_big_x(va_list args);
+int			handle_c(va_list args);
 
 #endif
